@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import ua.goodvice.javaspringlab.entity.Author;
 import ua.goodvice.javaspringlab.repository.AuthorRepositoryStub;
 
+import java.util.List;
+
 @Service
 public class AuthorService {
     @Autowired
@@ -14,4 +16,9 @@ public class AuthorService {
     public Author findAuthorByName(String name) {
         return authorRepository.findByName(name).orElseThrow();
     }
+
+    public List<Author> getAllAuthors(){
+        return authorRepository.findAll();
+    }
+
 }

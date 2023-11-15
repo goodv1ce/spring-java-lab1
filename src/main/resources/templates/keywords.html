@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Keywords</title>
+</head>
+<body>
+<h2>Keywords</h2>
+
+<form action="/keyword" method="POST">
+  <label>
+    <input type="checkbox" name="keywords" value="Fantasy">
+    Fantasy
+  </label>
+  <label>
+    <input type="checkbox" name="keywords" value="Thriller">
+    Thriller
+  </label>
+  <input type="checkbox" name="keywords" value="Horror">
+  Horror
+  <input type="checkbox" name="keywords" value="Comedy">
+  Comedy
+  <button type="submit">Submit</button>
+</form>
+</ul>
+</body>
+</html>
