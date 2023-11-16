@@ -94,11 +94,21 @@ public class Controller {
 
     @PostMapping("/admin/add")
     public String saveBook(@ModelAttribute("book") Book book, @RequestParam("keyword") String keyword) {
+        boolean isPresent = false;
         String[] stringOfKeywords = keyword.split(",");
-
         Author author = new Author();
         author.setName(book.getAuthor().getName());
         book.setAuthor(author);
+        List<Author> authorsList = authorService.getAllAuthors();
+        for (Author author1 : authorsList) {
+            if (author1.getName().equals(author.getName())) {
+                isPresent = true;
+                break;
+            }
+        }
+        if (!isPresent) {
+            authorService.getAllAuthors().add(author);
+        }
 
         Set<Keyword> keywordSet = new HashSet<>();
         for (String word : stringOfKeywords) {
@@ -106,6 +116,7 @@ public class Controller {
             keywordService.getAllKeywords().add(new Keyword(0L, word));
         }
         book.setId((bookService.getAllBooks().get(bookService.getAllBooks().size() - 1).getId()) + 1);
+        book.setAuthor(author);
         book.setKeywords(keywordSet);
 
         bookService.addOrUpdateBook(book);
