@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Keyword {
-    private  Long id;
-    private  String word;
+    private Long id;
+    private String word;
 }

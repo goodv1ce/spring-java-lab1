@@ -36,7 +36,7 @@ public class FakeDatabaseImplementation {
         // books initializing
         Book book1 = new Book(0L, "TestBook1", author1, Set.of(keyword1, keyword3));
         Book book2 = new Book(1L, "TestBook2", author2, Set.of(keyword1, keyword2, keyword4));
-        Book book3 = new Book(2L,"TestBook3",author1,Set.of(keyword3,keyword4));
+        Book book3 = new Book(2L, "TestBook3", author1, Set.of(keyword3, keyword4));
 
         bookTableImplementation.add(book1);
         bookTableImplementation.add(book2);

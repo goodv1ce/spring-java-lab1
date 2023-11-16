@@ -40,11 +40,11 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public List<Book> getAllBooks(){
+    public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    public Optional<Book> findBookById(Long id){
+    public Optional<Book> findBookById(Long id) {
         return bookRepository.findById(id);
     }
 }

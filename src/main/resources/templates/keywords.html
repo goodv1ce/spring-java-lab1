@@ -6,20 +6,13 @@
 </head>
 <body>
 <h2>Keywords</h2>
-
 <form action="/keyword" method="POST">
-  <label>
-    <input type="checkbox" name="keywords" value="Fantasy">
-    Fantasy
-  </label>
-  <label>
-    <input type="checkbox" name="keywords" value="Thriller">
-    Thriller
-  </label>
-  <input type="checkbox" name="keywords" value="Horror">
-  Horror
-  <input type="checkbox" name="keywords" value="Comedy">
-  Comedy
+  <div th:each="keyword : ${allkeywords}">
+    <label>
+      <input type="checkbox" name="keywords" th:value="${keyword}">
+      <span th:text="${keyword}"></span>
+    </label>
+  </div>
   <button type="submit">Submit</button>
 </form>
 </ul>

@@ -17,7 +17,7 @@ public class AuthorService {
         return authorRepository.findByName(name).orElseThrow();
     }
 
-    public List<Author> getAllAuthors(){
+    public List<Author> getAllAuthors() {
         return authorRepository.findAll();
     }
 

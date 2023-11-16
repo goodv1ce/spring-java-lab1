@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ua.goodvice.javaspringlab.entity.Keyword;
 import ua.goodvice.javaspringlab.repository.KeywordRepositoryStub;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class KeywordService {
@@ -12,5 +14,9 @@ public class KeywordService {
 
     public Keyword findKeywordByValue(String value) {
         return keywordRepository.findByValue(value).orElseThrow();
+    }
+
+    public List<Keyword> getAllKeywords(){
+        return keywordRepository.findAll();
     }
 }
