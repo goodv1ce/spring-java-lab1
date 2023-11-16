@@ -52,6 +52,7 @@ public class BookRepositoryStub {
 
     public void save(Book book) {
         List<Book> books = database.getBooks();
+        Long bookId = book.getId();
         boolean isBookAlreadyInDatabase = books.
                 stream()
                 .anyMatch(bookFromDatabase -> Objects.equals(bookFromDatabase.getId(), book.getId()));

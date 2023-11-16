@@ -16,7 +16,8 @@ public class KeywordService {
         return keywordRepository.findByValue(value).orElseThrow();
     }
 
-    public List<Keyword> getAllKeywords(){
+    public List<Keyword> getAllKeywords() {
         return keywordRepository.findAll();
     }
+
 }

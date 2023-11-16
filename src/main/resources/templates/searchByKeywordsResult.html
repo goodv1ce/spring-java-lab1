@@ -6,7 +6,7 @@
 </head>
 <body>
 Ключові слова : <ul>
-  <li th:each="keyword: ${listofkeywords}" th:text="${keyword}"></li>
+  <li th:each="keyword: ${keywords}" th:text="${keyword.getWord()}"></li>
 </ul>
 <table>
   <tr>

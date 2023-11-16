@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2>Keywords</h2>
-<form action="/keyword" method="POST">
+<form action="/search/keywords" method="POST">
   <div th:each="keyword : ${allkeywords}">
     <label>
       <input type="checkbox" name="keywords" th:value="${keyword}">

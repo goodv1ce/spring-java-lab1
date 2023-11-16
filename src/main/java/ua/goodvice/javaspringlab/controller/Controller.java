@@ -1,9 +1,7 @@
 package ua.goodvice.javaspringlab.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.goodvice.javaspringlab.entity.Author;
 import ua.goodvice.javaspringlab.entity.Book;
@@ -12,7 +10,6 @@ import ua.goodvice.javaspringlab.service.AuthorService;
 import ua.goodvice.javaspringlab.service.BookService;
 import ua.goodvice.javaspringlab.service.KeywordService;
 
-import java.security.Key;
 import java.util.*;
 
 @org.springframework.stereotype.Controller
@@ -27,54 +24,34 @@ public class Controller {
         return "index";
     }
 
-    @GetMapping("/author")
+    @GetMapping("/search/authors")
     public String getAllAuthors(Model model) {
         model.addAttribute("authors", authorService.getAllAuthors());
-        return "authors";
+        return "searchByAuthor";
     }
 
-    @GetMapping("/author/{name}")
+    @GetMapping("/search/authors/{name}")
     public String getBooksByAuthor(@PathVariable("name") String name, Model model) {
         Author author = authorService.findAuthorByName(name);
-        model.addAttribute("name", author.getName());
         List<Book> books = bookService.findBooksByAuthor(author);
+        model.addAttribute("name", author.getName());
         model.addAttribute("books", books);
-        return "searchbyauthor";
-
+        return "searchByAuthorResult";
     }
 
+    @GetMapping("/search/title")
+    public String showGetBookByTitleTemplate() {
+        return "searchByTitle";
+    }
 
-    @PostMapping("/booktitle")
+    @PostMapping("/search/title")
     public String getBookByTitle(@RequestParam String title, Model model) {
         Book book = bookService.findBookByTitle(title);
         model.addAttribute("book", book);
-        return "searchbytitle";
+        return "searchByTitleResult";
     }
 
-    @GetMapping("/enterbooktitle")
-    public String showGetBookByTitleTemplate() {
-        return "entertitle";
-    }
-
-
-    @PostMapping("/keyword")
-    public String getBookByKeywords(@RequestParam List<String> keywords, Model model) {
-        Set<Keyword> keywords1 = new HashSet<>();
-        for (int i = 0; i < keywords.size(); i++) {
-            keywords1.add(keywordService.findKeywordByValue(keywords.get(i)));
-        }
-        if (keywords1.size() != 0) {
-            List<Book> books = bookService.findBooksByKeywords(keywords1);
-            model.addAttribute("books", books);
-            model.addAttribute("listofkeywords", keywords);
-            return "searchbykeywords";
-        }
-        model.addAttribute("keywords", keywords);
-        return "keywords";
-    }
-
-
-    @GetMapping("/keyword")
+    @GetMapping("/search/keywords")
     public String showKeywordsTemplate(Model model) {
         List<Keyword> allKeywords = keywordService.getAllKeywords();
         List<String> stringOfAllKeywords = new ArrayList<>();
@@ -82,61 +59,45 @@ public class Controller {
             stringOfAllKeywords.add(keyword.getWord());
         }
         model.addAttribute("allkeywords", stringOfAllKeywords);
-        return "keywords";
+        return "searchByKeywords";
+    }
+
+    @PostMapping("/search/keywords")
+    public String getBookByKeywords(@RequestParam Set<Keyword> keywords, Model model) {
+        List<Book> books = bookService.findBooksByKeywords(keywords);
+        model.addAttribute("books", books);
+        model.addAttribute("keywords", keywords);
+        return "searchByKeywordsResult";
     }
 
 
-    @GetMapping("/admin/add")
-    public String addNewBook(@ModelAttribute("book") Book book) {
-        return "addnewbook";
+    @GetMapping("/admin/books/add")
+    public String showAddBookForm(@ModelAttribute("book") Book book) {
+        return "addBookForm";
 
     }
 
-    @PostMapping("/admin/add")
-    public String saveBook(@ModelAttribute("book") Book book, @RequestParam("keyword") String keyword) {
-        boolean isPresent = false;
-        String[] stringOfKeywords = keyword.split(",");
-        Author author = new Author();
-        author.setName(book.getAuthor().getName());
-        book.setAuthor(author);
-        List<Author> authorsList = authorService.getAllAuthors();
-        for (Author author1 : authorsList) {
-            if (author1.getName().equals(author.getName())) {
-                isPresent = true;
-                break;
-            }
-        }
-        if (!isPresent) {
-            authorService.getAllAuthors().add(author);
-        }
 
-        Set<Keyword> keywordSet = new HashSet<>();
-        for (String word : stringOfKeywords) {
-            keywordSet.add(new Keyword(0L, word));
-            keywordService.getAllKeywords().add(new Keyword(0L, word));
-        }
-        book.setId((bookService.getAllBooks().get(bookService.getAllBooks().size() - 1).getId()) + 1);
-        book.setAuthor(author);
-        book.setKeywords(keywordSet);
+    @GetMapping("/admin/books")
+    public String showAdminBooksCatalogue(Model model) {
+        List<Book> books = bookService.getAllBooks();
+        model.addAttribute("books", books);
+        return "adminBooksCatalogue";
+    }
 
+    @PostMapping("/admin/books")
+    public String saveBook(@ModelAttribute("book") Book book) {
         bookService.addOrUpdateBook(book);
         return "redirect:/";
     }
 
-    @GetMapping("/admin/delete/{id}")
+    @GetMapping("/admin/books/delete/{id}")
     public String deleteBook(@PathVariable("id") Long id) {
         bookService.deleteBook(id);
         return "redirect:/admin/books";
     }
 
-    @GetMapping("/admin/books")
-    public String showBooks(Model model) {
-        List<Book> books = bookService.getAllBooks();
-        model.addAttribute("books", books);
-        return "books";
-    }
-
-    @GetMapping("/admin/edit/{id}")
+    @GetMapping("/admin/books/edit/{id}")
     public String editBookInformation(@PathVariable("id") Long id, Model model) {
         if (bookService.findBookById(id).isPresent()) {
             Book book = bookService.findBookById(id).get();
@@ -146,7 +107,7 @@ public class Controller {
             }
             model.addAttribute("book", book);
             model.addAttribute("keywords", String.join(",", keywords));
-            return "edit";
+            return "editBookForm";
         } else {
 
             return "redirect:/admin/books";

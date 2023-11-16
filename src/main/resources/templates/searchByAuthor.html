@@ -7,7 +7,7 @@
 <body>
 Authors:
 <div th:each="author : ${authors}">
-    <a th:href="@{/author/{name}(name =${author.getName()})}" th:text="${author.getName}">user1</a>
+    <a th:href="@{/search/authors/{name}(name =${author.getName()})}" th:text="${author.getName}">user1</a>
 </div>
 
 </body>
