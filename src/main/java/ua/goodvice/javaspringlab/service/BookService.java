@@ -8,6 +8,7 @@ import ua.goodvice.javaspringlab.entity.Keyword;
 import ua.goodvice.javaspringlab.repository.BookRepositoryStub;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -39,4 +40,11 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+    public List<Book> getAllBooks(){
+        return bookRepository.findAll();
+    }
+
+    public Optional<Book> findBookById(Long id){
+        return bookRepository.findById(id);
+    }
 }

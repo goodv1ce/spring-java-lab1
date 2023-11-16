@@ -1,9 +1,13 @@
 package ua.goodvice.javaspringlab.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Author {
-    private final Long id;
-    private final String name;
+    private  Long id;
+    private  String name;
 }

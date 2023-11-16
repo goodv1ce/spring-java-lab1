@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/admin/add}" th:object="${book}">
+
+  <label for="title" >Enter title</label>
+  <input  type="text" th:field="*{title}" id="title"/><br/>
+
+  <label for="author">Enter Author</label>
+  <input type="text" th:field="*{author.name}" id="author"><br/>
+
+  <label for="keyword">Keywords </label>
+  <input type="text" id="keyword" name="keyword"/><br/>
+
+  <input type="submit" value="Save">
+</form>
+</body>
+</html>
+

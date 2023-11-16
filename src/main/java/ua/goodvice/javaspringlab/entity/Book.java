@@ -1,13 +1,17 @@
 package ua.goodvice.javaspringlab.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
-    private final Long id;
-    private final String title;
-    private final Author author;
-    private final Set<Keyword> keywords;
+    private  Long id;
+    private  String title;
+    private  Author author;
+    private  Set<Keyword> keywords;
 }
