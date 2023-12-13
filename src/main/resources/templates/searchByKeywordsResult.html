@@ -8,7 +8,9 @@
 Ключові слова : <ul>
   <li th:each="keyword: ${keywords}" th:text="${keyword.getWord()}"></li>
 </ul>
-<table>
+<div th:switch="${books.size()}">
+  <p th:case="0">No books found</p>
+<table th:case="*">
   <tr>
     <th>ID</th>
     <th>Title</th>
@@ -21,5 +23,6 @@
 
   </tr>
 </table>
+</div>
 </body>
 </html>

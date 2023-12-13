@@ -28,9 +28,11 @@ public class FakeDatabaseImplementation {
         // authors initializing
         Author author1 = new Author(0L, "TestAuthor1");
         Author author2 = new Author(1L, "TestAuthor2");
+        Author author3 = new Author(2L,"TestAuthor3");
 
         authorTableImplementation.add(author1);
         authorTableImplementation.add(author2);
+        authorTableImplementation.add(author3);
 
 
         // books initializing
