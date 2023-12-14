@@ -16,9 +16,9 @@ public class FakeDatabaseImplementation {
     public FakeDatabaseImplementation() {
         // keywords initializing
         Keyword keyword1 = new Keyword(0L, "Fantasy");
-        Keyword keyword2 = new Keyword(0L, "Thriller");
-        Keyword keyword3 = new Keyword(0L, "Horror");
-        Keyword keyword4 = new Keyword(0L, "Comedy");
+        Keyword keyword2 = new Keyword(1L, "Thriller");
+        Keyword keyword3 = new Keyword(2L, "Horror");
+        Keyword keyword4 = new Keyword(3L, "Comedy");
 
         keywordTableImplementation.add(keyword1);
         keywordTableImplementation.add(keyword2);

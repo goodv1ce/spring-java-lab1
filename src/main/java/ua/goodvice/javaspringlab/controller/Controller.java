@@ -77,7 +77,7 @@ public class Controller {
 
     }
 
-
+    // book CRUD
     @GetMapping("/admin/books")
     public String showAdminBooksCatalogue(Model model) {
         List<Book> books = bookService.getAllBooks();
@@ -87,7 +87,7 @@ public class Controller {
 
     @PostMapping("/admin/books")
     public String saveBook(@ModelAttribute("book") Book book) {
-        bookService.addOrUpdateBook(book);
+        bookService.saveBook(book);
         return "redirect:/";
     }
 
@@ -124,7 +124,7 @@ public class Controller {
         Author author = new Author();
         author.setName(authorName);
         Book book = new Book(id, title, author, keywordSet);
-        bookService.addOrUpdateBook(book);
+        bookService.saveBook(book);
         return "redirect:/admin/books";
     }
 }
