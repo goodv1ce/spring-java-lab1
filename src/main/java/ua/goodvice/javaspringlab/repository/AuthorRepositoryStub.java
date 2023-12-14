@@ -3,6 +3,7 @@ package ua.goodvice.javaspringlab.repository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ua.goodvice.javaspringlab.entity.Author;
+import ua.goodvice.javaspringlab.entity.Book;
 import ua.goodvice.javaspringlab.util.FakeDatabaseImplementation;
 
 import java.util.List;
@@ -35,9 +36,21 @@ public class AuthorRepositoryStub {
     }
 
     public void save(Author author) {
-        database
-                .getAuthors()
-                .add(author);
+        List<Author> authors = database.getAuthors();
+        boolean isAuthorAlreadyInDatabase = authors.
+                stream()
+                .anyMatch(bookFromDatabase -> Objects.equals(bookFromDatabase.getId(), author.getId()));
+        if (isAuthorAlreadyInDatabase) {
+            Author replacedBook = authors.
+                    stream()
+                    .filter(bookToBeReplaced -> Objects.equals(bookToBeReplaced.getId(), author.getId()))
+                    .findFirst()
+                    .orElseThrow();
+            int indexOfReplacedAuthor = authors.indexOf(replacedBook);
+            authors.set(indexOfReplacedAuthor, author);
+        } else {
+            authors.add(author);
+        }
     }
 
     public void deleteById(Long id) {

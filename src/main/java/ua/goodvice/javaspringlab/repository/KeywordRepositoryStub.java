@@ -2,6 +2,7 @@ package ua.goodvice.javaspringlab.repository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ua.goodvice.javaspringlab.entity.Book;
 import ua.goodvice.javaspringlab.entity.Keyword;
 import ua.goodvice.javaspringlab.util.FakeDatabaseImplementation;
 
@@ -35,9 +36,21 @@ public class KeywordRepositoryStub {
     }
 
     public void save(Keyword keyword) {
-        database
-                .getKeywords()
-                .add(keyword);
+        List<Keyword> keywords = database.getKeywords();
+        boolean isKeywordAlreadyInDatabase = keywords.
+                stream()
+                .anyMatch(keywordFromDatabase -> Objects.equals(keywordFromDatabase.getId(), keyword.getId()));
+        if (isKeywordAlreadyInDatabase) {
+            Keyword replacedKeyword = keywords.
+                    stream()
+                    .filter(keywordToBeReplaced -> Objects.equals(keywordToBeReplaced.getId(), keyword.getId()))
+                    .findFirst()
+                    .orElseThrow();
+            int indexOfReplacedBook = keywords.indexOf(replacedKeyword);
+            keywords.set(indexOfReplacedBook, keyword);
+        } else {
+            keywords.add(keyword);
+        }
     }
 
     public void deleteById(Long id) {
