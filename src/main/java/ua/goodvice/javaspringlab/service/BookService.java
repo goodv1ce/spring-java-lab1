@@ -32,7 +32,7 @@ public class BookService {
         return bookRepository.findByKeywords(keywords);
     }
 
-    public void addOrUpdateBook(Book book) {
+    public void saveBook(Book book) {
         bookRepository.save(book);
     }
 
