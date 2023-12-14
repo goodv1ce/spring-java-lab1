@@ -1,0 +1,266 @@
+openapi: 3.0.1
+info:
+  title: javaspringlab REST API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+paths:
+  /api/keywords:
+    get:
+      tags:
+        - keywords
+      summary: Get all keywords
+      description: Returns a list of all keywords for the books.
+      responses:
+        "200":
+          description: OK. Returned a list books
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    "id": 0,
+                    "word": "Fantasy"
+                  },
+                  {
+                    "id": 1,
+                    "word": "Thriller"
+                  },
+                  {
+                    "id": 2,
+                    "word": "Horror"
+                  },
+                  {
+                    "id": 3,
+                    "word": "Comedy"
+                  }
+                ]
+    put:
+      tags:
+        - keywords
+      summary: Update the keyword
+      description: Updates fields of the specific keyword.
+      responses:
+        "200":
+          description: OK. Keyword is updated.
+    post:
+      tags:
+        - keywords
+      summary: Add the keyword
+      description: Add a new keyword to the library.
+      responses:
+        "200":
+          description: OK. Keyword is added
+
+  /api/books:
+    get:
+      tags:
+        - books
+      summary: Get all books
+      description: Returns a list of all books in the library.
+      responses:
+        "200":
+          description: OK. Returned a list books
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    "id": 0,
+                    "title": "TestBook1",
+                    "author": {
+                      "id": 0,
+                      "name": "TestAuthor1"
+                    },
+                    "keywords": [
+                      {
+                        "id": 0,
+                        "word": "Fantasy"
+                      },
+                      {
+                        "id": 2,
+                        "word": "Horror"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 1,
+                    "title": "TestBook2",
+                    "author": {
+                      "id": 1,
+                      "name": "TestAuthor2"
+                    },
+                    "keywords": [
+                      {
+                        "id": 3,
+                        "word": "Comedy"
+                      },
+                      {
+                        "id": 1,
+                        "word": "Thriller"
+                      },
+                      {
+                        "id": 0,
+                        "word": "Fantasy"
+                      }
+                    ]
+                  }
+                ]
+
+    put:
+      tags:
+        - books
+      summary: Update the book
+      description: Updates fields of the specific book.
+      responses:
+        "200":
+          description: OK. Book is updated.
+    post:
+      tags:
+        - books
+      summary: Add the book
+      description: Add a new book to the library
+      responses:
+        "200":
+          description: OK. Book is added.
+
+  /api/authors:
+    get:
+      tags:
+        - authors
+      summary: Get all authors
+      description: Returns a list of all authors in the library.
+      responses:
+        "200":
+          description: OK. Returned a list of authors
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    "id": 0,
+                    "name": "TestAuthor1"
+                  },
+                  {
+                    "id": 1,
+                    "name": "TestAuthor2"
+                  },
+                  {
+                    "id": 2,
+                    "name": "TestAuthor3"
+                  }
+                ]
+    put:
+      tags:
+        - authors
+      summary: Update the author
+      description: Updates fields of the specific author.
+      responses:
+        "200":
+          description: OK. Author is updated.
+    post:
+      tags:
+        - authors
+      summary: Add the author
+      description: Add a new author to the library
+      responses:
+        "200":
+          description: OK. Author is added.
+
+  /api/books/{id}:
+    get:
+      tags:
+        - books
+      summary: Find book by id
+      description: Return a book by its id
+      parameters:
+        - name: id
+          in: path
+          required: true
+      responses:
+        "200":
+          description: OK. Book is found
+        "404":
+          description: Book is not found
+    delete:
+      tags:
+        - books
+      summary: Delete book by id
+      description: Deletes a book by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+      responses:
+        "200":
+          description: OK. Book is found
+        "404":
+          description: Book is not found
+  /api/books/paginate:
+    get:
+      tags:
+        - books
+      summary: Get all books paginated
+      description: Returns a list of books. Number of elements is limited by the query parameter "size"
+      parameters:
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        "200":
+          description: OK
+  /api/books/filter:
+    get:
+      tags:
+        - books
+      summary: Get all books filtered by author
+      description: Returns a list of books filtered by author
+      parameters:
+        - name: author
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /api/keywords/{id}:
+    delete:
+      tags:
+        - keywords
+      summary: Delete keyword by id
+      description: Deletes keyword by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK. Keyword is deleted
+        "404":
+          description: Keyword is not found
+  /api/authors/{id}:
+    delete:
+      tags:
+        - authors
+      summary: Delete keyword by id
+      description: Deletes keyword by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK. Author is deleted
+        "404":
+          description: Author is not found
