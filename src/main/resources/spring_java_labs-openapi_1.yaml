@@ -1,0 +1,363 @@
+openapi: "3.0.3"
+info:
+  title: "spring_java_labs API"
+  version: "1.0.0"
+servers:
+  - url: "https://localhost:8081"
+tags:
+  - name: Book API
+    description: Operations related to book management.
+  - name: Author API
+    description: Operations related to author management.
+  - name: Keyword API
+    description: Operations related to keyword management
+paths:
+  /api/books:
+    get:
+      tags:
+        - Book API
+      summary: "GET api/books"
+      operationId: "getAllBooks"
+      description: "Retrieves a collection of all books."
+      responses:
+        "200":
+          description: "OK. Collection of all books is returned."
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Book"
+    post:
+      tags:
+        - Book API
+      summary: "POST api/books"
+      operationId: "addNewBook"
+      description: "Adds a new book."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Book"
+        required: true
+      responses:
+        "200":
+          description: "OK. Book was added successfully."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: "Bad Request. More information in the response body."
+    put:
+      tags:
+        - Book API
+      summary: "PUT api/books"
+      operationId: "updateBook"
+      description: "Updates existing book."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Book"
+        required: true
+      responses:
+        "200":
+          description: "OK. Book was updated successfully."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: "Bad Request. More information in the response body."
+
+  /api/authors:
+    get:
+      tags:
+        - Author API
+      summary: "GET api/authors"
+      operationId: "getAllAuthors"
+      description: "Retrieves a collection of all authors."
+      responses:
+        "200":
+          description: "OK. Collection of authors is returned."
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Author"
+    post:
+      tags:
+        - Author API
+      summary: "POST api/authors"
+      operationId: "addNewAuthor"
+      description: "Adds new author."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Author"
+        required: true
+      responses:
+        "200":
+          description: "OK. Author was added."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Author"
+        "400":
+          description: "Bad Request. More information in the response body."
+    put:
+      tags:
+        - Author API
+      summary: "PUT api/authors"
+      operationId: "updateAuthor"
+      description: "Updates existing author."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Author"
+        required: true
+      responses:
+        "200":
+          description: "OK. Author was updated."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Author"
+        "400":
+          description: "Bad Request. More information in the response body."
+
+  /api/keywords:
+    get:
+      tags:
+        - Keyword API
+      summary: "GET api/keywords"
+      operationId: "getAllKeywords"
+      description: "Retrieves a collection of all keywords."
+      responses:
+        "200":
+          description: "OK. Keyword was updated successfully."
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Keyword"
+    post:
+      tags:
+        - Keyword API
+      summary: "POST api/keywords"
+      operationId: "addNewKeyword"
+      description: "Adds new keyword."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Keyword"
+        required: true
+      responses:
+        "200":
+          description: "OK. Keyword was added successfully."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Keyword"
+        "400":
+          description: "Bad Request. More information in the response body."
+    put:
+      tags:
+        - Keyword API
+      summary: "PUT api/keywords"
+      operationId: "updateKeyword"
+      description: "Updates an existing keyword."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Keyword"
+        required: true
+      responses:
+        "200":
+          description: "OK. Keyword was updated successfully."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Keyword"
+        "400":
+          description: "Bad Request. More information in the response body."
+
+  /api/books/{id}:
+    delete:
+      tags:
+        - Book API
+      summary: "DELETE api/books/{id}"
+      operationId: "deleteBook"
+      description: "Deletes book by ID."
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK. Book was deleted successfully."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+        "400":
+          description: "Bad Request. More information in the body."
+    get:
+      tags:
+        - Book API
+      summary: "GET api/books/{id}"
+      operationId: "getBookById"
+      description: "Retrieves book by ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+        "400":
+          description: "Bad Request. More information in the body."
+  /api/authors/{id}:
+    delete:
+      tags:
+        - Author API
+      summary: "DELETE api/authors/{id}"
+      operationId: "deleteAuthor"
+      description: "Deletes keyword by ID."
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+        "400":
+          description: "Bad Request. More information in the body."
+  /api/keywords/{id}:
+    delete:
+      tags:
+        - Keyword API
+      summary: "DELETE api/keywords/{id}"
+      operationId: "deleteKeyword"
+      description: "Deletes a keyword."
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK. Deleted keyword is returned."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+        "400":
+          description: "Bad Request. More information in the body."
+  /api/books/filter:
+    get:
+      tags:
+        - Book API
+      summary: "GET api/books/filter"
+      operationId: "getAllBooksFiltered"
+      description: "Retrieves a collection of books filtered by author name."
+      parameters:
+        - name: "author"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK. A filtered collection of books is returned."
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Book"
+  /api/books/paginate:
+    get:
+      tags:
+        - Book API
+      summary: "GET api/books/paginate"
+      operationId: "getAllBooksPaginated"
+      description: "Retrieves a collection of books paginated."
+      parameters:
+        - name: "size"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+      responses:
+        "200":
+          description: "OK. A collection of books is returned."
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Book"
+components:
+  schemas:
+    Author:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+    Keyword:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        word:
+          type: "string"
+    Book:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        title:
+          type: "string"
+        author:
+          $ref: "#/components/schemas/Author"
+        keywords:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Keyword"
+    Object:
+      type: "object"
+      properties: { }
