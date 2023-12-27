@@ -1,21 +1,20 @@
 package ua.goodvice.javaspringlab.service;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ua.goodvice.javaspringlab.entity.Author;
 import ua.goodvice.javaspringlab.entity.Book;
 import ua.goodvice.javaspringlab.entity.Keyword;
-import ua.goodvice.javaspringlab.repository.JdbcBookDao;
+import ua.goodvice.javaspringlab.repository.BookRepository;
 
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class BookService {
-    private final JdbcBookDao bookRepository;
-
+    private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final KeywordService keywordService;
 
@@ -52,6 +51,7 @@ public class BookService {
      * @param book object to be added in datasource. Author id and keyword id fields are ignoring.
      * @return ResponseEntity object with result of the saving.
      */
+
     public ResponseEntity<Object> saveBook(Book book) {
         StringBuilder responseErrorsWriter = new StringBuilder();
         Optional<Author> datasourceAuthor = authorService.findAuthorByName(book.getAuthor().getName());
@@ -127,7 +127,7 @@ public class BookService {
             responseErrorsWriter.append("Book with such ID does not exist");
         }
         if (responseErrorsWriter.isEmpty()) {
-            bookRepository.update(book);
+            bookRepository.save(book);
             return ResponseEntity.status(HttpStatus.OK).body(book);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseErrorsWriter.toString());
@@ -137,14 +137,15 @@ public class BookService {
 
     public ResponseEntity<Object> deleteBook(int id) {
         StringBuilder errorWriter = new StringBuilder();
-        Optional<Book> deletedBook = bookRepository.deleteById(id);
-        if (deletedBook.isEmpty()) {
+        Optional<Book> book = bookRepository.findById(id);
+        bookRepository.deleteById(id);
+        if (book.isEmpty()) {
             errorWriter.append("Book with id ").append(id).append(" does not exist.\n");
         }
         if (errorWriter.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Book has been deleted successfully");
-            response.put("deleted_book", deletedBook.orElse(null));
+            //response.put("deleted_book", book.orElse(null));
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorWriter);

@@ -6,20 +6,28 @@ import org.springframework.web.bind.annotation.*;
 import ua.goodvice.javaspringlab.entity.Author;
 import ua.goodvice.javaspringlab.entity.Book;
 import ua.goodvice.javaspringlab.entity.Keyword;
+import ua.goodvice.javaspringlab.exception.AuthorNotFoundException;
 import ua.goodvice.javaspringlab.service.AuthorService;
 import ua.goodvice.javaspringlab.service.BookService;
 import ua.goodvice.javaspringlab.service.KeywordService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
 public class RESTController {
+
     private final AuthorService authorService;
     private final BookService bookService;
     private final KeywordService keywordService;
+
+    @PostMapping("/books/keywords")
+    public List<Book> getBooksByKeywords(@RequestBody Set<Keyword> keywords){
+        return bookService.findBooksByKeywords(keywords);
+    }
 
     /**
      * Retrieves a collection of all books
@@ -61,7 +69,7 @@ public class RESTController {
      */
     @GetMapping("/books/filter")
     public ResponseEntity<Object> getAllBooksFiltered(@RequestParam String author) {
-        return bookService.findBooksByAuthor(authorService.findAuthorByName(author).orElseThrow());
+        return bookService.findBooksByAuthor(authorService.findAuthorByName(author).orElseThrow(()-> new AuthorNotFoundException(author)));
     }
 
     /**

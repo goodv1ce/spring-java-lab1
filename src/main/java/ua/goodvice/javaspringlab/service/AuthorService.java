@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ua.goodvice.javaspringlab.entity.Author;
-import ua.goodvice.javaspringlab.repository.JdbcAuthorDao;
+import ua.goodvice.javaspringlab.repository.AuthorRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class AuthorService {
-    private JdbcAuthorDao authorRepository;
+    private AuthorRepository authorRepository;
 
     public Optional<Author> findAuthorByName(String name) {
         return authorRepository.findByName(name);
@@ -55,7 +55,7 @@ public class AuthorService {
             }
         }
         if (errorBuilder.isEmpty()) {
-            authorRepository.update(author);
+            authorRepository.save(author);
             return ResponseEntity.status(HttpStatus.OK).body(author);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBuilder.toString());
@@ -65,14 +65,15 @@ public class AuthorService {
 
     public ResponseEntity<Object> deleteAuthor(int id) {
         StringBuilder errorWriter = new StringBuilder();
-        Optional<Author> deletedAuthor = authorRepository.deleteById(id);
-        if (deletedAuthor.isEmpty()) {
+        Optional<Author> author = authorRepository.findById(id);
+        authorRepository.removeAuthor(id);
+        authorRepository.deleteById(id);
+        if (author.isEmpty()) {
             errorWriter.append("Author with ID ").append(id).append(" does not exist.\n");
         }
         if (errorWriter.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Author has been deleted successfully");
-            response.put("deleted_author", deletedAuthor.orElse(null));
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorWriter);

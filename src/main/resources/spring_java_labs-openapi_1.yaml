@@ -302,6 +302,8 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/Book"
+        "400":
+          description: "Bad Request. More information in the body."
   /api/books/paginate:
     get:
       tags:

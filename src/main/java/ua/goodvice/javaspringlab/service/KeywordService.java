@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ua.goodvice.javaspringlab.entity.Keyword;
-import ua.goodvice.javaspringlab.repository.JdbcKeywordDao;
+import ua.goodvice.javaspringlab.repository.KeywordRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +15,9 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class KeywordService {
-    private final JdbcKeywordDao keywordRepository;
-
+    private final KeywordRepository keywordRepository;
     public Optional<Keyword> findKeywordByValue(String value) {
-        return keywordRepository.findByValue(value);
+        return keywordRepository.findByWord(value);
     }
 
     public Optional<Keyword> findKeywordById(int id) {
@@ -55,7 +54,7 @@ public class KeywordService {
             }
         }
         if (errorBuilder.isEmpty()) {
-            keywordRepository.update(keyword);
+            keywordRepository.save(keyword);
             return ResponseEntity.status(HttpStatus.OK).body(keyword);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBuilder.toString());
@@ -64,14 +63,16 @@ public class KeywordService {
 
     public ResponseEntity<Object> deleteKeyword(int id) {
         StringBuilder errorWriter = new StringBuilder();
-        Optional<Keyword> deletedKeyword = keywordRepository.deleteById(id);
-        if (deletedKeyword.isEmpty()) {
+        Optional<Keyword> keyword = keywordRepository.findById(id);
+        keywordRepository.deleteKeywordsById(id);
+        keywordRepository.deleteById(id);
+        if (keyword.isEmpty()) {
             errorWriter.append("Keyword with ID ").append(id).append(" does not exist.\n");
         }
         if (errorWriter.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Keyword has been deleted successfully");
-            response.put("deleted_keyword", deletedKeyword.orElse(null));
+            //response.put("deleted_keyword", keyword.orElse(null));
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorWriter);
