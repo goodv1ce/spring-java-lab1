@@ -24,11 +24,6 @@ public class RESTController {
     private final BookService bookService;
     private final KeywordService keywordService;
 
-    @PostMapping("/books/keywords")
-    public List<Book> getBooksByKeywords(@RequestBody Set<Keyword> keywords){
-        return bookService.findBooksByKeywords(keywords);
-    }
-
     /**
      * Retrieves a collection of all books
      *
